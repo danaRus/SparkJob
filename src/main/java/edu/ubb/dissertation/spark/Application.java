@@ -64,7 +64,7 @@ public class Application {
                 .map(ModelCreatorHelper::createPatientDataFromRow)
                 .collect(Collectors.toList()))
                 .stream()
-                .filter(patientData -> patientData.getTimestamp().isAfter(startTimestamp) && patientData.getTimestamp().isBefore(endTimestamp))
+                .filter(patientData -> isInTimeRange(patientData.getTimestamp(), startTimestamp, endTimestamp))
                 .collect(Collectors.toMap(PatientData::getTimestamp, patientData -> patientData));
     }
 
@@ -74,7 +74,13 @@ public class Application {
                 .collectAsList()
                 .stream()
                 .map(ModelCreatorHelper::createSensorDataFromRow)
+                .filter(sensorData -> isInTimeRange(sensorData.getTimestamp(), startTimestamp, endTimestamp))
                 .collect(Collectors.toMap(SensorData::getTimestamp, sensorData -> sensorData));
+    }
+
+    private static boolean isInTimeRange(final LocalDateTime timestamp, final LocalDateTime startTimestamp,
+                                         final LocalDateTime endTimestamp) {
+        return timestamp.isAfter(startTimestamp) && timestamp.isBefore(endTimestamp);
     }
 
     private static List<MergedData> mergeData(final Map<LocalDateTime, PatientData> patientData, final Map<LocalDateTime, SensorData> sensorData) {
