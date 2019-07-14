@@ -6,12 +6,14 @@ import edu.ubb.dissertation.spark.model.MergedData;
 import edu.ubb.dissertation.spark.model.PatientData;
 import edu.ubb.dissertation.spark.model.SensorData;
 import edu.ubb.dissertation.spark.service.FileService;
+import edu.ubb.dissertation.spark.util.ModelCreatorHelper;
 import edu.ubb.dissertation.spark.util.TypeConverter;
+import org.apache.spark.SparkConf;
+import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
-import org.apache.spark.sql.SparkSession;
+import org.apache.spark.sql.hive.HiveContext;
 
-import java.io.File;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +21,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static edu.ubb.dissertation.spark.util.ModelCreatorHelper.createMergedData;
-import static edu.ubb.dissertation.spark.util.FunctionHelper.*;
 import static edu.ubb.dissertation.spark.util.TableHelper.*;
 
 
@@ -34,46 +35,45 @@ public class Application {
         final LocalDateTime startTimestamp = LocalDateTime.now().minusHours(7);
         final LocalDateTime endTimestamp = LocalDateTime.now();
 
-        final String warehouseLocation = new File("spark-warehouse").getAbsolutePath();
-        final SparkSession sparkSession = SparkSession.builder()
-                .appName("BatchProcessingApp")
-                .config("spark.sql.warehouse.dir", warehouseLocation)
-                .enableHiveSupport()
-                .getOrCreate();
+        SparkConf sparkConf = new SparkConf();
+        JavaSparkContext javaSparkContext = new JavaSparkContext(sparkConf);
+        HiveContext hiveContext = new HiveContext(javaSparkContext.sc());
 
         // retrieve the data
-        final Map<LocalDateTime, PatientData> patientData = retrievePatientData(sparkSession, startTimestamp, endTimestamp);
-        final Map<LocalDateTime, SensorData> sensorData = retrieveSensorData(sparkSession, startTimestamp, endTimestamp);
+        final Map<LocalDateTime, PatientData> patientData = retrievePatientData(hiveContext, startTimestamp, endTimestamp);
+        final Map<LocalDateTime, SensorData> sensorData = retrieveSensorData(hiveContext, startTimestamp, endTimestamp);
 
         // configure the errorTypes
         patientData.values().forEach(PatientData::configureErrorTypes);
 
         // insert the values into the table with merged entries
-        sparkSession.sql(String.format("CREATE TABLE IF NOT EXISTS merged_data (%s) USING hive", createMergedDataTableColumnsWithType()));
+        hiveContext.sql(String.format("CREATE TABLE IF NOT EXISTS dissertation.merged_data (%s) USING hive", createMergedDataTableColumnsWithType()));
 
         // using this data, the table will contain the details needed to display what percentage of the surgery the
         // patient had the parameters outside of the ranges
-        Dataset<MergedData> mergedData = sparkSession.createDataset(mergeData(patientData, sensorData), Encoders.bean(MergedData.class));
-        mergedData.toDF(createMergedDataTableColumns()).write().mode("overwrite").saveAsTable("merged_data"); // use overwrite or append
+
+        Dataset<MergedData> mergedData = hiveContext.createDataset(mergeData(patientData, sensorData), Encoders.bean(MergedData.class));
+        mergedData.toDF().write().mode("overwrite").saveAsTable("dissertation.merged_data"); // use overwrite or append
     }
 
-    private static Map<LocalDateTime, PatientData> retrievePatientData(final SparkSession sparkSession, final LocalDateTime startTimestamp,
+    private static Map<LocalDateTime, PatientData> retrievePatientData(final HiveContext hiveContext, final LocalDateTime startTimestamp,
                                                                        final LocalDateTime endTimestamp) {
-        return mergeEntries(sparkSession.sql(String.format("SELECT %s FROM patient_data ORDER by timestamp", createPatientDataColumns()))
-                .map(createPatientMapFunction(), Encoders.bean(PatientData.class)) // the data here is with a string for abnormal vital sign
-                .filter(createPatientDataFilterFunction(startTimestamp, endTimestamp))
-                .collectAsList())
+        return mergeEntries(hiveContext.sql(String.format("SELECT %s FROM patient_data ORDER by timestamp", createPatientDataColumns()))
+                .collectAsList()
                 .stream()
+                .map(ModelCreatorHelper::createPatientDataFromRow)
+                .collect(Collectors.toList()))
+                .stream()
+                .filter(patientData -> patientData.getTimestamp().isAfter(startTimestamp) && patientData.getTimestamp().isBefore(endTimestamp))
                 .collect(Collectors.toMap(PatientData::getTimestamp, patientData -> patientData));
     }
 
-    private static Map<LocalDateTime, SensorData> retrieveSensorData(final SparkSession sparkSession, final LocalDateTime startTimestamp,
+    private static Map<LocalDateTime, SensorData> retrieveSensorData(final HiveContext hiveContext, final LocalDateTime startTimestamp,
                                                                      final LocalDateTime endTimestamp) {
-        return sparkSession.sql(String.format("SELECT %s FROM sensor_data ORDER by timestamp", createSensorDataColumns()))
-                .map(createSensorMapFunction(), Encoders.bean(SensorData.class))
-                .filter(createSensorDataFilterFunction(startTimestamp, endTimestamp))
+        return hiveContext.sql(String.format("SELECT %s FROM sensor_data ORDER by timestamp", createSensorDataColumns()))
                 .collectAsList()
                 .stream()
+                .map(ModelCreatorHelper::createSensorDataFromRow)
                 .collect(Collectors.toMap(SensorData::getTimestamp, sensorData -> sensorData));
     }
 
