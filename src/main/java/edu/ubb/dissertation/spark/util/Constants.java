@@ -1,0 +1,17 @@
+package edu.ubb.dissertation.spark.util;
+
+public final class Constants {
+
+    private Constants() {
+    }
+
+    // abnormal vital sign possible values
+    public static final String SYSTOLIC_BLOOD_PRESSURE_BELOW_LOWER_LIMIT = "SYSTOLIC_BLOOD_PRESSURE_BELOW_LOWER_LIMIT";
+    public static final String SYSTOLIC_BLOOD_PRESSURE_ABOVE_UPPER_LIMIT = "SYSTOLIC_BLOOD_PRESSURE_ABOVE_UPPER_LIMIT";
+    public static final String DIASTOLIC_BLOOD_PRESSURE_BELOW_LOWER_LIMIT = "DIASTOLIC_BLOOD_PRESSURE_BELOW_LOWER_LIMIT";
+    public static final String DIASTOLIC_BLOOD_PRESSURE_ABOVE_UPPER_LIMIT = "DIASTOLIC_BLOOD_PRESSURE_ABOVE_UPPER_LIMIT";
+    public static final String HEART_RATE_BELOW_LOWER_LIMIT = "HEART_RATE_BELOW_LOWER_LIMIT";
+    public static final String HEART_RATE_ABOVE_UPPER_LIMIT = "HEART_RATE_ABOVE_UPPER_LIMIT";
+    public static final String OXYGEN_SATURATION_LEVEL_BELOW_LOWER_LIMIT = "OXYGEN_SATURATION_LEVEL_BELOW_LOWER_LIMIT";
+    public static final String OXYGEN_SATURATION_LEVEL_ABOVE_UPPER_LIMIT = "OXYGEN_SATURATION_LEVEL_ABOVE_UPPER_LIMIT";
+}
