@@ -35,9 +35,9 @@ public class Application {
         final LocalDateTime startTimestamp = LocalDateTime.now().minusHours(7);
         final LocalDateTime endTimestamp = LocalDateTime.now();
 
-        SparkConf sparkConf = new SparkConf();
-        JavaSparkContext javaSparkContext = new JavaSparkContext(sparkConf);
-        HiveContext hiveContext = new HiveContext(javaSparkContext.sc());
+        final SparkConf sparkConf = new SparkConf();
+        final JavaSparkContext javaSparkContext = new JavaSparkContext(sparkConf);
+        final HiveContext hiveContext = new HiveContext(javaSparkContext.sc());
 
         // retrieve the data
         final Map<LocalDateTime, PatientData> patientData = retrievePatientData(hiveContext, startTimestamp, endTimestamp);
@@ -52,7 +52,7 @@ public class Application {
         // using this data, the table will contain the details needed to display what percentage of the surgery the
         // patient had the parameters outside of the ranges
 
-        Dataset<MergedData> mergedData = hiveContext.createDataset(mergeData(patientData, sensorData), Encoders.bean(MergedData.class));
+        final Dataset<MergedData> mergedData = hiveContext.createDataset(mergeData(patientData, sensorData), Encoders.bean(MergedData.class));
         mergedData.toDF().write().mode("overwrite").saveAsTable("dissertation.merged_data"); // use overwrite or append
     }
 
