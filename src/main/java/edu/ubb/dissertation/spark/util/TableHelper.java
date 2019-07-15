@@ -39,11 +39,11 @@ public final class TableHelper {
 
 
     public static String createPatientDataColumns() {
-        return String.join(", ", "timestamp", "patient_id", "surgery_id", "systolicBloodPressure",
-                "systolicBloodPressureUpperLimit", "systolicBloodPressureLowerLimit", "diastolicBloodPressure",
-                "diastolicBloodPressureUpperLimit", "diastolicBloodPressureLowerLimit", "heartRate",
-                "heartRateUpperLimit", "heartRateLowerLimit", "oxygenSaturationLevel", "oxygenSaturationLevelUpperLimit",
-                "oxygenSaturationLevelLowerLimit", "bloodLossRate", "abnormalVitalSigns");
+        return String.join(", ", "timestamp", "patient_id", "surgery_id", "systolic_blood_pressure",
+                "systolic_blood_pressure_upper_limit", "systolic_blood_pressure_lower_limit", "diastolic_blood_pressure",
+                "diastolic_blood_pressure_upper_limit", "diastolic_blood_pressure_lower_limit", "heart_rate",
+                "heart_rate_upper_limit", "heart_rate_lower_limit", "oxygen_saturation_level", "oxygen_saturation_level_upper_limit",
+                "oxygen_saturation_level_lower_limit", "blood_loss_rate", "abnormal_vital_signs");
     }
 
     public static String createSensorDataColumns() {

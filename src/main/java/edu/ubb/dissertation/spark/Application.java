@@ -32,7 +32,7 @@ public class Application {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
 
-    private static final String CONNECTION_URL = "jdbc:hive2://localhost:10000/dissertation";
+    private static final String CONNECTION_URL = "jdbc:hive2://localhost:10000/";
     private static final String DRIVER_NAME = "org.apache.hive.jdbc.HiveDriver";
     private static final String THRIFT_URL = "thrift://localhost:9083";
 
@@ -61,7 +61,7 @@ public class Application {
         patientData.values().forEach(PatientData::configureErrorTypes);
 
         // insert the values into the table with merged entries
-        hiveContext.sql(String.format("CREATE TABLE IF NOT EXISTS merged_data (%s) USING hive", createMergedDataTableColumnsWithType()));
+        hiveContext.sql(String.format("CREATE TABLE IF NOT EXISTS dissertation.merged_data (%s) USING hive", createMergedDataTableColumnsWithType()));
 
         // using this data, the table will contain the details needed to display what percentage of the surgery the
         // patient had the parameters outside of the ranges
@@ -72,7 +72,7 @@ public class Application {
 
     private static Map<LocalDateTime, PatientData> retrievePatientData(final HiveContext hiveContext, final LocalDateTime startTimestamp,
                                                                        final LocalDateTime endTimestamp) {
-        return mergeEntries(hiveContext.sql(String.format("SELECT %s FROM patient_data ORDER by timestamp", createPatientDataColumns()))
+        return mergeEntries(hiveContext.sql(String.format("SELECT %s FROM dissertation.patient_data ORDER by timestamp", createPatientDataColumns()))
                 .collectAsList()
                 .stream()
                 .map(ModelCreatorHelper::createPatientDataFromRow)
@@ -84,7 +84,7 @@ public class Application {
 
     private static Map<LocalDateTime, SensorData> retrieveSensorData(final HiveContext hiveContext, final LocalDateTime startTimestamp,
                                                                      final LocalDateTime endTimestamp) {
-        return hiveContext.sql(String.format("SELECT %s FROM sensor_data ORDER by timestamp", createSensorDataColumns()))
+        return hiveContext.sql(String.format("SELECT %s FROM dissertation.sensor_data ORDER by timestamp", createSensorDataColumns()))
                 .collectAsList()
                 .stream()
                 .map(ModelCreatorHelper::createSensorDataFromRow)
