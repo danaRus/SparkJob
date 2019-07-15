@@ -16,7 +16,7 @@ public final class TableHelper {
                 "oxygenSaturationLevel", "oxygenSaturationLevelUpperLimit", "oxygenSaturationLevelLowerLimit", "bloodLossRate",
                 "systolicBloodPressureType", "diastolicBloodPressureType", "heartRateType", "oxygenSaturationLevelType")
                 .map(value -> String.format("%s DOUBLE", value));
-        final Stream<String> patientIdFields = Stream.of("patient_id INTEGER",
+        final Stream<String> patientIdFields = Stream.of("patient_id INT",
                 "surgery_id STRING");
         final Stream<String> sensorDoubleFields = Stream.of("rotation", "temperature", "force", "pressure")
                 .map(value -> String.format("%s DOUBLE", value));

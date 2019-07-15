@@ -1,10 +1,11 @@
 package edu.ubb.dissertation.spark.model;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 import static org.apache.commons.lang3.Validate.notNull;
 
-public class MergedData {
+public class MergedData implements Serializable {
 
     private Timestamp timestamp;
     // patient data fields
@@ -230,99 +231,199 @@ public class MergedData {
         return timestamp;
     }
 
+    public void setTimestamp(final Timestamp timestamp) {
+        this.timestamp = timestamp;
+    }
+
     public Double getSystolicBloodPressure() {
         return systolicBloodPressure;
+    }
+
+    public void setSystolicBloodPressure(final Double systolicBloodPressure) {
+        this.systolicBloodPressure = systolicBloodPressure;
     }
 
     public Double getSystolicBloodPressureUpperLimit() {
         return systolicBloodPressureUpperLimit;
     }
 
+    public void setSystolicBloodPressureUpperLimit(final Double systolicBloodPressureUpperLimit) {
+        this.systolicBloodPressureUpperLimit = systolicBloodPressureUpperLimit;
+    }
+
     public Double getSystolicBloodPressureLowerLimit() {
         return systolicBloodPressureLowerLimit;
+    }
+
+    public void setSystolicBloodPressureLowerLimit(final Double systolicBloodPressureLowerLimit) {
+        this.systolicBloodPressureLowerLimit = systolicBloodPressureLowerLimit;
     }
 
     public Double getDiastolicBloodPressure() {
         return diastolicBloodPressure;
     }
 
+    public void setDiastolicBloodPressure(final Double diastolicBloodPressure) {
+        this.diastolicBloodPressure = diastolicBloodPressure;
+    }
+
     public Double getDiastolicBloodPressureUpperLimit() {
         return diastolicBloodPressureUpperLimit;
+    }
+
+    public void setDiastolicBloodPressureUpperLimit(final Double diastolicBloodPressureUpperLimit) {
+        this.diastolicBloodPressureUpperLimit = diastolicBloodPressureUpperLimit;
     }
 
     public Double getDiastolicBloodPressureLowerLimit() {
         return diastolicBloodPressureLowerLimit;
     }
 
+    public void setDiastolicBloodPressureLowerLimit(final Double diastolicBloodPressureLowerLimit) {
+        this.diastolicBloodPressureLowerLimit = diastolicBloodPressureLowerLimit;
+    }
+
     public Double getHeartRate() {
         return heartRate;
+    }
+
+    public void setHeartRate(final Double heartRate) {
+        this.heartRate = heartRate;
     }
 
     public Double getHeartRateUpperLimit() {
         return heartRateUpperLimit;
     }
 
+    public void setHeartRateUpperLimit(final Double heartRateUpperLimit) {
+        this.heartRateUpperLimit = heartRateUpperLimit;
+    }
+
     public Double getHeartRateLowerLimit() {
         return heartRateLowerLimit;
+    }
+
+    public void setHeartRateLowerLimit(final Double heartRateLowerLimit) {
+        this.heartRateLowerLimit = heartRateLowerLimit;
     }
 
     public Double getOxygenSaturationLevel() {
         return oxygenSaturationLevel;
     }
 
+    public void setOxygenSaturationLevel(final Double oxygenSaturationLevel) {
+        this.oxygenSaturationLevel = oxygenSaturationLevel;
+    }
+
     public Double getOxygenSaturationLevelUpperLimit() {
         return oxygenSaturationLevelUpperLimit;
+    }
+
+    public void setOxygenSaturationLevelUpperLimit(final Double oxygenSaturationLevelUpperLimit) {
+        this.oxygenSaturationLevelUpperLimit = oxygenSaturationLevelUpperLimit;
     }
 
     public Double getOxygenSaturationLevelLowerLimit() {
         return oxygenSaturationLevelLowerLimit;
     }
 
+    public void setOxygenSaturationLevelLowerLimit(final Double oxygenSaturationLevelLowerLimit) {
+        this.oxygenSaturationLevelLowerLimit = oxygenSaturationLevelLowerLimit;
+    }
+
     public Double getBloodLossRate() {
         return bloodLossRate;
+    }
+
+    public void setBloodLossRate(final Double bloodLossRate) {
+        this.bloodLossRate = bloodLossRate;
     }
 
     public Integer getSystolicBloodPressureType() {
         return systolicBloodPressureType;
     }
 
+    public void setSystolicBloodPressureType(final Integer systolicBloodPressureType) {
+        this.systolicBloodPressureType = systolicBloodPressureType;
+    }
+
     public Integer getDiastolicBloodPressureType() {
         return diastolicBloodPressureType;
+    }
+
+    public void setDiastolicBloodPressureType(final Integer diastolicBloodPressureType) {
+        this.diastolicBloodPressureType = diastolicBloodPressureType;
     }
 
     public Integer getHeartRateType() {
         return heartRateType;
     }
 
+    public void setHeartRateType(final Integer heartRateType) {
+        this.heartRateType = heartRateType;
+    }
+
     public Integer getOxygenSaturationLevelType() {
         return oxygenSaturationLevelType;
+    }
+
+    public void setOxygenSaturationLevelType(final Integer oxygenSaturationLevelType) {
+        this.oxygenSaturationLevelType = oxygenSaturationLevelType;
     }
 
     public Long getPatientId() {
         return patientId;
     }
 
+    public void setPatientId(final Long patientId) {
+        this.patientId = patientId;
+    }
+
     public String getSurgeryId() {
         return surgeryId;
+    }
+
+    public void setSurgeryId(final String surgeryId) {
+        this.surgeryId = surgeryId;
     }
 
     public Double getRotation() {
         return rotation;
     }
 
+    public void setRotation(final Double rotation) {
+        this.rotation = rotation;
+    }
+
     public Double getTemperature() {
         return temperature;
+    }
+
+    public void setTemperature(final Double temperature) {
+        this.temperature = temperature;
     }
 
     public Double getForce() {
         return force;
     }
 
+    public void setForce(final Double force) {
+        this.force = force;
+    }
+
     public Double getPressure() {
         return pressure;
     }
 
+    public void setPressure(final Double pressure) {
+        this.pressure = pressure;
+    }
+
     public String getArmId() {
         return armId;
+    }
+
+    public void setArmId(final String armId) {
+        this.armId = armId;
     }
 }

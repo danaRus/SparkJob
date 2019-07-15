@@ -20,7 +20,7 @@ public final class ModelCreatorHelper {
     public static PatientData createPatientDataFromRow(final Row row) {
         return new PatientData.Builder()
                 .withTimestamp(row.getTimestamp(0).toLocalDateTime())
-                .withPatientId(row.getLong(1))
+                .withPatientId((long) row.getInt(1))
                 .withSurgeryId(row.getString(2))
                 .withSystolicBloodPressure(row.getDouble(3))
                 .withSystolicBloodPressureUpperLimit(row.getDouble(4))

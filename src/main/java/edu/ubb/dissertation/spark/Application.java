@@ -61,7 +61,7 @@ public class Application {
         patientData.values().forEach(PatientData::configureErrorTypes);
 
         // insert the values into the table with merged entries
-        hiveContext.sql(String.format("CREATE TABLE IF NOT EXISTS dissertation.merged_data (%s) USING hive", createMergedDataTableColumnsWithType()));
+        hiveContext.sql(String.format("CREATE TABLE IF NOT EXISTS dissertation.merged_data (%s)", createMergedDataTableColumnsWithType()));
 
         // using this data, the table will contain the details needed to display what percentage of the surgery the
         // patient had the parameters outside of the ranges
