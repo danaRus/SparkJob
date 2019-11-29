@@ -67,6 +67,8 @@ public final class ModelCreatorHelper {
                 .withOxygenSaturationLevelLowerLimit(patientData.getOxygenSaturationLevelLowerLimit())
                 .withBloodLossRate(patientData.getBloodLossRate())
                 .withAbnormalVitalSigns(abnormalVitalSigns)
+                .withPatientId(patientData.getPatientId())
+                .withSurgeryId(patientData.getSurgeryId())
                 .build();
     }
 
